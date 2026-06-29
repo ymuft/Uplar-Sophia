@@ -2,158 +2,247 @@
 
 # 🧠 Uplar Sophia
 
-### Transform CSV into Beautiful Dashboards.
+### Transform CSV into Beautiful Dashboards
 
-<p>
-  <strong>Turn raw spreadsheets into stunning, interactive analytics in seconds.</strong>
-</p>
+Turn structured CSV spreadsheets into beautiful, interactive dashboards with charts, KPIs, and actionable business insights.
 
-<img src="https://img.shields.io/badge/version-1.0-blue?style=for-the-badge">
-<img src="https://img.shields.io/badge/status-active-success?style=for-the-badge">
-<img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge">
-<img src="https://img.shields.io/badge/made%20with-%E2%9D%A4-red?style=for-the-badge">
+<img src="./assets/images/banner.png" alt="Uplar Sophia Banner"/>
+
+<br>
+
+![Version](https://img.shields.io/badge/version-1.0-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+![Made with](https://img.shields.io/badge/Made%20with-JavaScript-yellow?style=for-the-badge)
 
 </div>
 
 ---
 
-## ✨ About
+# ✨ About
 
-**Uplar Sophia** is an intelligent analytics platform that transforms **CSV files** into **beautiful dashboards** with interactive charts, KPI cards, advanced filtering, and actionable business insights.
+**Uplar Sophia** is an analytics platform developed by **Uplar** that automatically transforms structured CSV spreadsheets into modern business intelligence dashboards.
 
-Simply upload your spreadsheet and let Sophia build professional visualizations automatically.
+Upload your financial spreadsheet and instantly explore:
 
-> **Upload CSV → Get Insights.**
-
----
-
-## 🚀 Features
-
-- 📁 Drag & Drop CSV Upload
-- 📊 Automatic Chart Generation
+- 📊 Interactive Charts
 - 📈 KPI Cards
-- 🏭 Sector Filtering
-- 🔍 Smart Search
-- 📅 Date Range Filter
-- ⚡ Fast Rendering
-- 🎨 Modern UI
-- 📱 Responsive Design
-- 📂 No Database Required
+- 📅 Monthly Trends
+- 🏭 Cost Center Analysis
+- 🔍 Smart Filtering
+- 💰 Expense Breakdown
+
+No database required.
+
+Simply upload your CSV and start analyzing.
 
 ---
 
-## 🖼 Preview
+# 📸 Preview
 
 <p align="center">
-
-<img src="./preview.png" width="100%">
-
+<img src="./assets/images/preview.png" width="100%">
 </p>
 
 ---
 
-## ⚙️ How it works
+# 🚀 Features
+
+- 📁 CSV Upload
+- 📊 Automatic Dashboard Generation
+- 📈 KPI Cards
+- 🏭 Cost Center Filters
+- 🔎 Search by Description
+- 📅 Date Range Filter
+- 📉 Expense Trends
+- 📋 Expense Ranking
+- 🎨 Modern UI
+- ⚡ Fast Rendering
+- 📱 Responsive Design
+
+---
+
+# ⚠️ Supported CSV Format
+
+> **Important**
+>
+> Uplar Sophia only supports CSV files following the required spreadsheet structure.
+
+Generic CSV files are **not supported**.
+
+The spreadsheet **must** contain the following layout.
+
+| Column | Description |
+|---------|-------------|
+| DESC. CONTA | Expense description |
+| DESC. C. CUSTO | Cost center / department |
+| Month Columns | Monthly values (Apr/26, May/26, Jun/26...) |
+
+Example:
+
+| DESC. CONTA | DESC. C. CUSTO | Apr/26 | May/26 |
+|--------------|----------------|---------|---------|
+| SERVICOS DE TERCEIROS PJ | FUNDICAO (D.V.) | 3276.19 | 6471.51 |
+| TELEFONE | INJECAO PLASTICA (D.V.) | 3.83 | 3.83 |
+| MANUTENCAO E REPAROS | FUNDICAO (D.V.) | 23642.24 | 19675.82 |
+
+---
+
+# 📌 CSV Requirements
+
+✔ First row must contain headers
+
+✔ Column A = **DESC. CONTA**
+
+✔ Column B = **DESC. C. CUSTO**
+
+✔ Remaining columns = Months
+
+✔ Monetary values must be numeric
+
+✔ Empty cells can remain blank or contain "-"
+
+---
+
+# ⚙️ How It Works
 
 ```text
-           CSV File
-              │
-              ▼
-      Data Processing
-              │
-              ▼
-    Automatic Analytics
-              │
-              ▼
- Beautiful Interactive Dashboard
+                CSV Spreadsheet
+                       │
+                       ▼
+            Automatic Data Processing
+                       │
+                       ▼
+        Expense Classification by Sector
+                       │
+                       ▼
+        KPI Calculation & Aggregation
+                       │
+                       ▼
+     Interactive Charts & Visual Analytics
 ```
 
 ---
 
-## 📊 Built For
+# 📊 Dashboard Includes
 
-- Manufacturing
-- Finance
-- Cost Analysis
-- MES
-- ERP Reports
-- Business Intelligence
-- Operational Analytics
+- Total Expenses
+- Monthly Average
+- Largest Cost Category
+- Monthly Evolution
+- Cost Center Participation
+- Dynamic Filters
+- Search Engine
+- Interactive Charts
 
 ---
 
-## 🧩 Tech Stack
+# 🏭 Perfect For
+
+- Manufacturing
+- MES Systems
+- ERP Financial Reports
+- Cost Analysis
+- Industrial Companies
+- Accounting
+- Finance Teams
+- Business Intelligence
+
+---
+
+# 🧩 Tech Stack
 
 | Technology | Purpose |
 |------------|---------|
 | HTML5 | Structure |
-| CSS3 | Styling |
-| JavaScript | Logic |
+| CSS3 | Interface |
+| JavaScript | Application Logic |
 | Chart.js | Charts |
 | PapaParse | CSV Parsing |
 
 ---
 
-## 📂 Project Structure
+# 📁 Project Structure
 
-```bash
-Uplar-Sophia/
-├── dashboard.html
-├── preview.png
+```text
+Uplar-Sophia
+│
+├── assets
+│   ├── css
+│   ├── js
+│   ├── icons
+│   └── images
+│       ├── banner.png
+│       └── preview.png
+│
+├── examples
+│   └── sample.csv
+│
+├── index.html
 └── README.md
 ```
 
 ---
 
-## 🎯 Philosophy
+# 📥 Sample CSV
 
-> **Data becomes valuable only when it becomes understandable.**
+A sample CSV file is available inside:
 
-Sophia was created with one goal:
+```text
+examples/sample.csv
+```
 
-> Transform complex spreadsheets into beautiful dashboards anyone can understand.
-
----
-
-## 🌟 Why Sophia?
-
-Inspired by **Sophia**, the Greek concept of **Wisdom**, this project turns raw data into meaningful knowledge through elegant visualizations and intuitive analytics.
+Use it as a reference for your own spreadsheets.
 
 ---
 
-## 🚀 Future Roadmap
+# 🌟 Philosophy
 
-- [ ] AI Insights
+> **"Where Data Becomes Wisdom."**
+
+Inspired by the Greek concept of **Sophia (Wisdom)**, this project aims to transform raw operational data into clear, meaningful insights through elegant visualizations.
+
+---
+
+# 🗺 Roadmap
+
+- [ ] AI-powered Insights
+- [ ] Excel (.xlsx) Import
 - [ ] PDF Export
-- [ ] Excel Export
-- [ ] Custom Themes
-- [ ] Multi-language
-- [ ] Real-Time Data
-- [ ] Cloud Sync
-- [ ] Authentication
-- [ ] Custom Widgets
+- [ ] Dashboard Themes
+- [ ] Multiple Languages
+- [ ] Custom KPI Widgets
+- [ ] Saved Dashboards
+- [ ] User Authentication
+- [ ] Cloud Synchronization
 
 ---
 
-## 🤝 Contributing
+# 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome.
 
-Feel free to fork the project, open issues, or submit pull requests.
+Feel free to:
+
+- Fork the repository
+- Submit pull requests
+- Open issues
+- Suggest new features
 
 ---
 
-## 📜 License
+# 📜 License
 
-Released under the **MIT License**.
+This project is licensed under the MIT License.
 
 ---
 
 <div align="center">
 
-### 🧠 Uplar Sophia
+## 🧠 Uplar Sophia
 
-**Where Data Becomes Wisdom.**
+### Transform CSV into Beautiful Dashboards
 
-Made with ❤️ by **Uplar**
+Built with ❤️ by **Uplar**
 
 </div>
