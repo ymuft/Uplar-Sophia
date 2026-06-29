@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro Interativo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #3b82f6;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 20px; overflow-x: hidden; }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* HEADER E CONTROLES SUPERIORES */
+        header {
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
+            border-bottom: 1px solid var(--border); padding-bottom: 20px;
+        }
+        .header-title h1 { font-size: 22px; font-weight: 700; color: var(--text-main); }
+        .header-title p { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        /* CONTROLES DE FILTROS SUPERIORES */
+        .filter-control-box {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--bg-card); padding: 8px 14px; border-radius: var(--radius);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
+            font-size: 13px; color: var(--text-muted); font-weight: 500;
+        }
+        .filter-control-box select, .filter-control-box input {
+            border: none; background: #f1f5f9; padding: 6px 10px; border-radius: 6px;
+            font-weight: 600; color: var(--text-main); outline: none; transition: background 0.2s; font-size: 13px;
+        }
+        .filter-control-box select:hover, .filter-control-box input:focus { background: #e2e8f0; }
+
+        .upload-btn {
+            position: relative; background: var(--primary); color: white;
+            padding: 10px 18px; border-radius: var(--radius); font-weight: 600; font-size: 13px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        .upload-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .upload-btn input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+
+        /* AREA DE FILTROS DE SETOR INTERATIVOS (PILLS) */
+        .sectors-filter-area {
+            background: var(--bg-card); padding: 12px 16px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border);
+        }
+        .sectors-filter-area p { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;}
+        .pills-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        
+        .sector-pill {
+            padding: 6px 14px; background: #f1f5f9; border: 1px solid transparent;
+            border-radius: 20px; font-size: 12px; color: #475569; cursor: pointer;
+            user-select: none; transition: all 0.2s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .sector-pill:hover { background: #e2e8f0; }
+        .sector-pill input { display: none; }
+        .sector-pill input:checked + span { color: var(--primary); font-weight: 600; }
+        .sector-pill.active {
+            background: var(--primary-light); border-color: #bfdbfe; color: var(--primary); box-shadow: 0 2px 4px rgba(59, 130, 246, 0.05);
+        }
+
+        /* GRIDS COMPACTOS */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .charts-pies { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+        /* CARDS */
+        .card { background: var(--bg-card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .card-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* KPIS */
+        .kpi-card { display: flex; align-items: center; gap: 16px; }
+        .kpi-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .kpi-info h3 { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }
+        .kpi-info .value { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+        .kpi-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        /* HEIGHT DOS GRÁFICOS */
+        .chart-container { position: relative; height: 210px; width: 100%; }
+
+        /* LISTA DE SETORES INTERATIVA */
+        .sector-list { list-style: none; max-height: 210px; overflow-y: auto; padding-right: 4px; }
+        .sector-list::-webkit-scrollbar { width: 4px; }
+        .sector-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .sector-item { margin-bottom: 12px; }
+        .sector-item-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 500; }
+        .sector-item-val { font-weight: 700; color: var(--text-main); }
+        .progress-bg { background: #f1f5f9; height: 6px; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* TABELA GERAL (VISÃO DE RESUMO RESIDUAL) */
+        .table-responsive { overflow-x: auto; width: 100%; max-height: 400px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f8fafc; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        tbody tr:hover { background: #f8fafc; }
+        .val-col { font-weight: 600; color: var(--text-main); }
+
+        .btn-load-more {
+            display: block; width: 100%; margin-top: 12px; padding: 9px; text-align: center;
+            background: #fff; border: 1px dashed #cbd5e1; border-radius: 8px;
+            color: var(--primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 12px;
+        }
+        .btn-load-more:hover { background: var(--primary-light); border-color: var(--primary); }
+        
+        /* POP-UP / MODAL ESTILIZADO */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+            z-index: 1000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.25s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        
+        .modal-box {
+            background: var(--bg-card); padding: 22px; border-radius: var(--radius);
+            max-width: 750px; width: 92%; max-height: 85vh; display: flex; flex-direction: column;
+            box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+            transform: scale(0.95); transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.show .modal-box { transform: scale(1); }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .modal-title h2 { font-size: 16px; font-weight: 700; color: var(--text-main); }
+        .modal-title p { font-size: 12px; color: var(--text-muted); }
+        
+        .modal-close-btn { background: #f1f5f9; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-weight: 700; transition: background 0.2s; }
+        .modal-close-btn:hover { background: #e2e8f0; color: var(--text-main); }
+        
+        .modal-filters-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .modal-filters-row label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+        .modal-filters-row select, .modal-filters-row input { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; outline: none; cursor: pointer; background: #f8fafc; }
+        .modal-filters-row input { cursor: text; }
+
+        .modal-summary { background: var(--primary-light); padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: #1e40af; font-weight: 600; display: flex; justify-content: space-between; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+
+        @media (max-width: 1024px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            .charts-pies { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-title">
+            <h1>Dashboard Analítico</h1>
+            <p>Clique nos gráficos para expandir e detalhar os dados de cada mês</p>
+        </div>
+        
+        <div class="header-actions">
+            <div class="filter-control-box" id="uiDescFilterContainer" style="display: none;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="uiGlobalDescFilter" placeholder="Buscar na descrição..." style="width: 160px;">
+            </div>
+
+            <div class="filter-control-box" id="uiDateFilter" style="display: none;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <select id="selStartMonth"></select>
+                <span>até</span>
+                <select id="selEndMonth"></select>
+            </div>
+
+            <div class="upload-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                Carregar Planilha CSV
+                <input type="file" id="csvFileInput" accept=".csv" />
+            </div>
+        </div>
+    </header>
+
+    <div id="emptyState" class="empty-state card">
+        <svg style="width: 44px; height: 44px; margin-bottom: 12px; opacity: 0.4; color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <h3>Nenhum arquivo importado</h3>
+        <p style="font-size: 13px; margin-top: 4px;">Selecione um arquivo CSV de despesas clicando no botão acima.</p>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        
+        <div class="sectors-filter-area">
+            <p>Filtrar por Setores</p>
+            <div id="uiSectorsContainer" class="pills-container"></div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="card kpi-card">
+                <div class="kpi-icon" style="background: var(--primary-light); color: var(--primary);">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="kpi-info">
+                    <h3>Gasto Total Filtro</h3>
+                    <div class="value" id="kpiTotal">R$ 0,00</div>
+                </div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-icon" style="background: var(--success-light); color: var(--success);">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                </div>
+                <div class="kpi-info">
+                    <h3>Média Mensal</h3>
+                    <div class="value" id="kpiMedia">R$ 0,00</div>
+                </div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-icon" style="background: var(--warning-light); color: var(--warning);">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                </div>
+                <div class="kpi-info">
+                    <h3>Maior Categoria</h3>
+                    <div class="value" id="kpiSetorName" style="font-size: 15px; margin-top:2px;">-</div>
+                    <div class="subtitle" id="kpiSetorVal">R$ 0,00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Evolução de Gastos Totais</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Participação por Setor</span></div>
+                <ul class="sector-list" id="uiSectorList"></ul>
+            </div>
+        </div>
+
+        <div class="charts-pies">
+            <div class="card">
+                <div class="card-header"><span class="card-title">Distribuição por Setor (Todos)</span></div>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Gastos por Descrição (Todos)</span></div>
+                <div class="chart-container">
+                    <canvas id="pieDescChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                <span class="card-title">Curva de Tendência Temporal</span>
+            </div>
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Histórico de Lançamentos Gerais</span>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Descrição</th><th>Setor</th><th>Valor (R$)</th></tr>
+                    </thead>
+                    <tbody id="uiTableBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-load-more" id="btnLoadMore" style="display: none;">Ver mais despesas...</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div class="modal-title">
+                <h2 id="modalMonthTitle">Detalhamento de Contas</h2>
+                <p>Gastos consolidados do período selecionado</p>
+            </div>
+            <button class="modal-close-btn" id="btnCloseModal">&times;</button>
+        </div>
+        
+        <div class="modal-filters-row">
+            <label for="modalSectorFilter">Categoria:</label>
+            <select id="modalSectorFilter">
+                <option value="all">Todas as categorias</option>
+            </select>
+            
+            <label for="modalDescFilter" style="margin-left: auto;">Buscar Descrição:</label>
+            <input type="text" id="modalDescFilter" placeholder="Ex: Conta de Luz...">
+        </div>
+
+        <div class="modal-summary">
+            <span>TOTAL EXIBIDO:</span>
+            <span id="modalMonthTotal">R$ 0,00</span>
+        </div>
+        <div class="table-responsive" style="max-height: 45vh;">
+            <table>
+                <thead>
+                    <tr><th>Data</th><th>Descrição da Conta</th><th>Setor</th><th>Valor (R$)</th></tr>
+                </thead>
+                <tbody id="uiModalTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allData = [];
+    let selectedSectors = new Set();
+    let charts = {}; 
+    
+    let globalStartMonth = null;
+    let globalEndMonth = null;
+    let currentTableData = [];
+    let currentModalData = []; // Variável global para armazenar os dados do modal ativo
+    let tableVisibleRows = 10;
+    let monthDictionary = {};
+
+    const formatBRL = (val) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
+
+    document.getElementById('csvFileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(event) { processData(event.target.result); };
+        reader.readAsText(file, 'ISO-8859-1'); 
+    });
+
+    function processData(csvText) {
+        allData = [];
+        selectedSectors.clear();
+        monthDictionary = {};
+        const lines = csvText.split('\n').filter(line => line.trim() !== '');
+        if (lines.length < 2) return;
+
+        const delimiter = lines[0].includes(';') ? ';' : ',';
+        
+        for (let i = 1; i < lines.length; i++) {
+            const row = lines[i].split(new RegExp(`\\s*${delimiter}\\s*(?=(?:[^"]*"[^"]*")*[^"]*$)`)); 
+            if (row.length >= 4) {
+                const date = row[0].replace(/"/g, '').trim();
+                const desc = row[1].replace(/"/g, '').trim();
+                const sector = row[2].replace(/"/g, '').trim();
+                let valStr = row[3].replace(/"/g, '').trim();
+
+                if (valStr.includes(',')) valStr = valStr.replace(/\./g, '').replace(',', '.');
+                const valNum = parseFloat(valStr);
+
+                if (!isNaN(valNum) && date) {
+                    const dateParts = date.split('/');
+                    let monthKey = 'Outros', sortKey = '0000-00';
+                    if(dateParts.length === 3) {
+                        const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+                        const mIndex = parseInt(dateParts[1]) - 1;
+                        monthKey = `${monthNames[mIndex]}/${dateParts[2].slice(-2)}`; 
+                        sortKey = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}`;
+                        monthDictionary[sortKey] = monthKey;
+                    }
+                    allData.push({ date, desc, sector, value: valNum, monthKey, sortKey });
+                    if(sector) selectedSectors.add(sector);
+                }
+            }
+        }
+
+        if(allData.length > 0) {
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('uiDateFilter').style.display = 'flex';
+            document.getElementById('uiDescFilterContainer').style.display = 'flex';
+            
+            initDateFilters();
+            renderSectorPills();
+            updateDashboard();
+        }
+    }
+
+    function initDateFilters() {
+        const sortedUniqueMonths = Object.keys(monthDictionary).sort();
+        const selStart = document.getElementById('selStartMonth');
+        const selEnd = document.getElementById('selEndMonth');
+        
+        selStart.innerHTML = ''; selEnd.innerHTML = '';
+
+        sortedUniqueMonths.forEach(key => {
+            const opt1 = document.createElement('option'); opt1.value = key; opt1.text = monthDictionary[key];
+            selStart.appendChild(opt1);
+            const opt2 = document.createElement('option'); opt2.value = key; opt2.text = monthDictionary[key];
+            selEnd.appendChild(opt2);
+        });
+
+        globalStartMonth = sortedUniqueMonths[0];
+        globalEndMonth = sortedUniqueMonths[sortedUniqueMonths.length - 1];
+        
+        selStart.value = globalStartMonth;
+        selEnd.value = globalEndMonth;
+
+        const onDateChange = () => {
+            if(selStart.value > selEnd.value) selEnd.value = selStart.value;
+            globalStartMonth = selStart.value;
+            globalEndMonth = selEnd.value;
+            updateDashboard();
+        };
+
+        selStart.addEventListener('change', onDateChange);
+        selEnd.addEventListener('change', onDateChange);
+    }
+
+    document.getElementById('uiGlobalDescFilter').addEventListener('input', updateDashboard);
+
+    function renderSectorPills() {
+        const container = document.getElementById('uiSectorsContainer');
+        container.innerHTML = '';
+        
+        const uniqueSectorsList = Array.from(new Set(allData.map(d => d.sector))).filter(Boolean).sort();
+        
+        uniqueSectorsList.forEach(sector => {
+            const pill = document.createElement('div');
+            pill.className = 'sector-pill active';
+            pill.innerHTML = `<input type="checkbox" value="${sector}" checked><span>✓ ${sector}</span>`;
+            
+            pill.addEventListener('click', function(e) {
+                const cb = this.querySelector('input');
+                if(e.target !== cb) cb.checked = !cb.checked;
+                
+                if(cb.checked) {
+                    this.classList.add('active');
+                    this.querySelector('span').textContent = `✓ ${sector}`;
+                    selectedSectors.add(sector);
+                } else {
+                    this.classList.remove('active');
+                    this.querySelector('span').textContent = sector;
+                    selectedSectors.delete(sector);
+                }
+                updateDashboard();
+            });
+            container.appendChild(pill);
+        });
+    }
+
+    function updateDashboard() {
+        const globalDescSearch = document.getElementById('uiGlobalDescFilter').value.toLowerCase();
+
+        const filteredData = allData.filter(d => 
+            selectedSectors.has(d.sector) && 
+            d.sortKey >= globalStartMonth && 
+            d.sortKey <= globalEndMonth &&
+            (globalDescSearch === '' || d.desc.toLowerCase().includes(globalDescSearch))
+        );
+
+        let totalVal = 0;
+        const sectorData = {};
+        const monthData = {};
+        const descData = {}; // Novo objeto para agregar por Descrição da Conta
+
+        const sortedUniqueMonths = Object.keys(monthDictionary).sort();
+        sortedUniqueMonths.forEach(m => {
+            if(m >= globalStartMonth && m <= globalEndMonth) {
+                monthData[m] = { label: monthDictionary[m], total: 0 };
+            }
+        });
+
+        filteredData.forEach(d => {
+            totalVal += d.value;
+            
+            if(!sectorData[d.sector]) sectorData[d.sector] = 0;
+            sectorData[d.sector] += d.value;
+            
+            if(monthData[d.sortKey]) monthData[d.sortKey].total += d.value;
+            
+            // Agrupando por Descrição para o novo gráfico
+            if(!descData[d.desc]) descData[d.desc] = 0;
+            descData[d.desc] += d.value;
+        });
+
+        const numMonths = Object.keys(monthData).length || 1;
+        document.getElementById('kpiTotal').textContent = formatBRL(totalVal);
+        document.getElementById('kpiMedia').textContent = formatBRL(totalVal / numMonths);
+
+        const topSectorEntry = Object.entries(sectorData).sort((a,b) => b[1] - a[1])[0];
+        if(topSectorEntry) {
+            document.getElementById('kpiSetorName').textContent = topSectorEntry[0];
+            document.getElementById('kpiSetorVal').textContent = formatBRL(topSectorEntry[1]);
+        } else {
+            document.getElementById('kpiSetorName').textContent = "-";
+            document.getElementById('kpiSetorVal').textContent = "R$ 0,00";
+        }
+
+        const sortedMonths = Object.keys(monthData).sort();
+        const labelsMonths = sortedMonths.map(k => monthData[k].label);
+        const dataMonths = sortedMonths.map(k => monthData[k].total);
+        
+        const sortedSectorsArr = Object.entries(sectorData).sort((a,b) => b[1] - a[1]);
+        const sortedDescArr = Object.entries(descData).sort((a,b) => b[1] - a[1]); // Top Descrições
+        
+        renderBarChart(labelsMonths, dataMonths, sortedMonths);
+        renderPieChart(sortedSectorsArr);
+        renderDescPieChart(sortedDescArr); // Chamada para o novo gráfico
+        renderLineChart(labelsMonths, dataMonths, sortedMonths);
+        renderSectorList(sortedSectorsArr, totalVal);
+        
+        currentTableData = filteredData.sort((a, b) => b.date.split('/').reverse().join('').localeCompare(a.date.split('/').reverse().join('')));
+        tableVisibleRows = 10;
+        renderTableRows();
+    }
+
+    // --- EXPANDIR VIA POP-UP (MODAL) ---
+    function openDetailsModal(monthSortKey, monthLabel) {
+        const globalDescSearch = document.getElementById('uiGlobalDescFilter').value.toLowerCase();
+        
+        currentModalData = allData.filter(d => 
+            d.sortKey === monthSortKey && 
+            selectedSectors.has(d.sector) &&
+            (globalDescSearch === '' || d.desc.toLowerCase().includes(globalDescSearch))
+        );
+        
+        currentModalData.sort((a, b) => b.value - a.value);
+
+        document.getElementById('modalMonthTitle').textContent = `Despesas Detalhadas: ${monthLabel}`;
+        document.getElementById('modalDescFilter').value = ''; // Reseta o filtro de texto do modal
+        
+        const modalFilter = document.getElementById('modalSectorFilter');
+        modalFilter.innerHTML = '<option value="all">Todas as categorias</option>';
+        const uniqueSectors = Array.from(new Set(currentModalData.map(d => d.sector))).sort();
+        uniqueSectors.forEach(sec => {
+            const opt = document.createElement('option'); opt.value = sec; opt.text = sec;
+            modalFilter.appendChild(opt);
+        });
+        modalFilter.value = 'all'; 
+
+        renderModalTable(currentModalData); 
+
+        const modalEl = document.getElementById('detailsModal');
+        modalEl.style.display = 'flex';
+        setTimeout(() => modalEl.classList.add('show'), 10);
+    }
+
+    function renderModalTable(data) {
+        let totalModal = data.reduce((acc, curr) => acc + curr.value, 0);
+        document.getElementById('modalMonthTotal').textContent = formatBRL(totalModal);
+
+        const tbody = document.getElementById('uiModalTableBody');
+        tbody.innerHTML = '';
+
+        if(data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhum lançamento encontrado para a seleção.</td></tr>';
+        } else {
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color: var(--text-muted);">${item.date}</td>
+                    <td style="font-weight:500;">${item.desc}</td>
+                    <td style="color: var(--text-muted); font-size:11px;">${item.sector}</td>
+                    <td class="val-col">${formatBRL(item.value)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function applyModalFilters() {
+        const selectedSector = document.getElementById('modalSectorFilter').value;
+        const textDesc = document.getElementById('modalDescFilter').value.toLowerCase();
+        
+        let filteredData = currentModalData;
+        if (selectedSector !== 'all') {
+            filteredData = filteredData.filter(d => d.sector === selectedSector);
+        }
+        if (textDesc.trim() !== '') {
+            filteredData = filteredData.filter(d => d.desc.toLowerCase().includes(textDesc));
+        }
+        
+        renderModalTable(filteredData);
+    }
+
+    document.getElementById('modalSectorFilter').addEventListener('change', applyModalFilters);
+    document.getElementById('modalDescFilter').addEventListener('input', applyModalFilters);
+
+    function closeModal() {
+        const modalEl = document.getElementById('detailsModal');
+        modalEl.classList.remove('show');
+        setTimeout(() => modalEl.style.display = 'none', 200);
+    }
+
+    document.getElementById('btnCloseModal').addEventListener('click', closeModal);
+    document.getElementById('detailsModal').addEventListener('click', function(e) {
+        if(e.target === this) closeModal();
+    });
+
+    // --- CONFIGURAÇÕES GRÁFICAS (CHART.JS) ---
+    function renderBarChart(labels, data, rawKeys) {
+        if(charts.bar) charts.bar.destroy();
+        charts.bar = new Chart(document.getElementById('barChart').getContext('2d'), {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ data: data, backgroundColor: '#3b82f6', hoverBackgroundColor: '#1d4ed8', borderRadius: 4, barPercentage: 0.55 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) } } },
+                scales: { y: { beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { font:{size:10}, callback:(v) => 'R$ '+ (v/1000).toFixed(0)+'k' } }, x: { grid: { display: false }, ticks: { font:{size:10} } } },
+                onClick: (e, activeEls) => { if(activeEls.length > 0) openDetailsModal(rawKeys[activeEls[0].index], labels[activeEls[0].index]); }
+            }
+        });
+    }
+
+    function renderLineChart(labels, data, rawKeys) {
+        if(charts.line) charts.line.destroy();
+        charts.line = new Chart(document.getElementById('lineChart').getContext('2d'), {
+            type: 'line',
+            data: { datasets: [{ data: data, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.06)', borderWidth: 2.5, fill: true, tension: 0.35, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#fff', pointBorderWidth: 2.5 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) } } },
+                scales: { y: { beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { display: false } }, x: { labels: labels, grid: { display: false }, ticks: { font:{size:10} } } },
+                onClick: (e, activeEls) => { if(activeEls.length > 0) openDetailsModal(rawKeys[activeEls[0].index], labels[activeEls[0].index]); }
+            }
+        });
+    }
+
+    function renderPieChart(sectorsArr) {
+        if(charts.pie) charts.pie.destroy();
+
+        const palette = ['#3b82f6','#10b981','#f59e0b','#6366f1','#ef4444','#14b8a6','#f97316','#8b5cf6','#ec4899','#0ea5e9','#84cc16','#a78bfa','#fb923c','#34d399','#60a5fa','#f472b6','#fbbf24','#4ade80','#e879f9','#38bdf8'];
+        const labels = sectorsArr.map(s => s[0]);
+        const data   = sectorsArr.map(s => s[1]);
+        const colors = labels.map((_, i) => palette[i % palette.length]);
+        const total  = data.reduce((a, b) => a + b, 0);
+
+        const useBar = labels.length > 6;
+        const chartEl = document.getElementById('pieChart');
+        const containerEl = chartEl.closest('.chart-container');
+        if (useBar) {
+            const dynH = Math.max(210, labels.length * 28);
+            containerEl.style.height = dynH + 'px';
+        } else {
+            containerEl.style.height = '210px';
+        }
+
+        if (useBar) {
+            charts.pie = new Chart(chartEl.getContext('2d'), {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }] },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, grid: { borderDash:[4,4] }, ticks: { font:{size:10}, callback: v => 'R$'+(v/1000).toFixed(0)+'k' } },
+                        y: { grid: { display: false }, ticks: { font:{size:10} } }
+                    }
+                }
+            });
+        } else {
+            charts.pie = new Chart(chartEl.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, cutout: '65%' }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: {size: 10} } },
+                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
+                    }
+                }
+            });
+        }
+    }
+
+    // NOVO: Gráfico de Pizza por Descrição da Conta
+    function renderDescPieChart(descArr) {
+        if(charts.pieDesc) charts.pieDesc.destroy();
+
+        const palette = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#0ea5e9','#10b981','#f59e0b','#3b82f6','#6366f1','#ef4444','#84cc16','#a78bfa','#fb923c','#34d399','#60a5fa','#f472b6','#fbbf24','#4ade80','#e879f9','#38bdf8'];
+        const labels = descArr.map(s => s[0]);
+        const data   = descArr.map(s => s[1]);
+        const colors = labels.map((_, i) => palette[i % palette.length]);
+        const total  = data.reduce((a, b) => a + b, 0);
+
+        const useBar = labels.length > 6;
+        const chartEl = document.getElementById('pieDescChart');
+        const containerEl = chartEl.closest('.chart-container');
+        if (useBar) {
+            const dynH = Math.max(210, labels.length * 28);
+            containerEl.style.height = dynH + 'px';
+        } else {
+            containerEl.style.height = '210px';
+        }
+
+        if (useBar) {
+            charts.pieDesc = new Chart(chartEl.getContext('2d'), {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }] },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, grid: { borderDash:[4,4] }, ticks: { font:{size:10}, callback: v => 'R$'+(v/1000).toFixed(0)+'k' } },
+                        y: { grid: { display: false }, ticks: { font:{size:10} } }
+                    }
+                }
+            });
+        } else {
+            charts.pieDesc = new Chart(chartEl.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, cutout: '65%' }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: {size: 10} } },
+                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
+                    }
+                }
+            });
+        }
+    }
+
+    function renderSectorList(sectorsArr, totalVal) {
+        const container = document.getElementById('uiSectorList'); container.innerHTML = '';
+        const colors = ['#3b82f6', '#10b981', '#f59e0b', '#6366f1', '#ef4444'];
+        sectorsArr.forEach((s, idx) => {
+            const pct = totalVal > 0 ? ((s[1] / totalVal) * 100).toFixed(1) : 0;
+            const li = document.createElement('li'); li.className = 'sector-item';
+            li.innerHTML = `
+                <div class="sector-item-header"><span>${s[0]}</span><span class="sector-item-val">${formatBRL(s[1])} (${pct}%)</span></div>
+                <div class="progress-bg"><div class="progress-fill" style="width: ${pct}%; background-color: ${colors[idx % colors.length]};"></div></div>
+            `;
+            container.appendChild(li);
+        });
+    }
+
+    // --- TABELA RESIDUAL DE HISTÓRICO GERAL ---
+    function renderTableRows() {
+        const tbody = document.getElementById('uiTableBody');
+        tbody.innerHTML = '';
+
+        const slicedData = currentTableData.slice(0, tableVisibleRows);
+        slicedData.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="color: var(--text-muted);">${item.date}</td>
+                <td style="font-weight: 500;">${item.desc}</td>
+                <td style="font-size: 11px; color: var(--text-muted);">${item.sector}</td>
+                <td class="val-col">${formatBRL(item.value)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        const btnLoadMore = document.getElementById('btnLoadMore');
+        if (currentTableData.length > tableVisibleRows) {
+            btnLoadMore.style.display = 'block';
+            btnLoadMore.textContent = `Ver mais despesas (Mostrando ${tableVisibleRows} de ${currentTableData.length})`;
+        } else {
+            btnLoadMore.style.display = 'none';
+        }
+    }
+
+    document.getElementById('btnLoadMore').addEventListener('click', () => {
+        tableVisibleRows += 12;
+        renderTableRows();
+    });
+</script>
+</body>
+</html>
