@@ -21,228 +21,90 @@ Turn structured CSV spreadsheets into beautiful, interactive dashboards with cha
 
 # ✨ About
 
-**Uplar Sophia** is an analytics platform developed by **Uplar** that automatically transforms structured CSV spreadsheets into modern business intelligence dashboards.
+**Uplar Sophia** is an analytics platform developed by **Uplar** that transforms structured CSV spreadsheets into modern, interactive business intelligence dashboards.
 
-Upload your financial spreadsheet and instantly explore:
+Upload your operational or financial data and instantly explore:
 
 - 📊 Interactive Charts
 - 📈 KPI Cards
-- 📅 Monthly Trends
-- 🏭 Cost Center Analysis
-- 🔍 Smart Filtering
-- 💰 Expense Breakdown
+- 🏭 Cost Center Breakdown
+- 🔍 Smart Filtering System
+- 📅 Time-based Analysis
+- 💰 Expense Aggregation
 
 No database required.
 
-Simply upload your CSV and start analyzing.
+Just upload your CSV and start analyzing instantly.
 
 ---
 
 # 📸 Preview
 
+## 📊 Dashboard View
+
 <p align="center">
 <img src="./assets/images/preview.png" width="100%">
 </p>
 
----
+## 📄 Input Spreadsheet Example
 
-# 🚀 Features
-
-- 📁 CSV Upload
-- 📊 Automatic Dashboard Generation
-- 📈 KPI Cards
-- 🏭 Cost Center Filters
-- 🔎 Search by Description
-- 📅 Date Range Filter
-- 📉 Expense Trends
-- 📋 Expense Ranking
-- 🎨 Modern UI
-- ⚡ Fast Rendering
-- 📱 Responsive Design
+<p align="center">
+<img src="./assets/images/excel-preview.png" width="100%">
+</p>
 
 ---
 
-# ⚠️ Supported CSV Format
+# ⚠️ IMPORTANT — Supported CSV Structure
 
-> **Important**
->
-> Uplar Sophia only supports CSV files following the required spreadsheet structure.
+Uplar Sophia **does NOT support generic CSV formats**.
 
-Generic CSV files are **not supported**.
+Your file must follow this **fixed structure exactly**:
 
-The spreadsheet **must** contain the following layout.
+### 📌 Required Columns
 
 | Column | Description |
-|---------|-------------|
+|--------|-------------|
+| MÊS | Reference month/date |
 | DESC. CONTA | Expense description |
 | DESC. C. CUSTO | Cost center / department |
-| Month Columns | Monthly values (Apr/26, May/26, Jun/26...) |
-
-Example:
-
-| DESC. CONTA | DESC. C. CUSTO | Apr/26 | May/26 |
-|--------------|----------------|---------|---------|
-| SERVICOS DE TERCEIROS PJ | FUNDICAO (D.V.) | 3276.19 | 6471.51 |
-| TELEFONE | INJECAO PLASTICA (D.V.) | 3.83 | 3.83 |
-| MANUTENCAO E REPAROS | FUNDICAO (D.V.) | 23642.24 | 19675.82 |
+| REALIZADO | Monetary value |
 
 ---
 
-# 📌 CSV Requirements
+## 📊 Example (Correct Format)
 
-✔ First row must contain headers
+| MÊS       | DESC. CONTA                | DESC. C. CUSTO            | REALIZADO |
+|----------|----------------------------|----------------------------|------------|
+| 01/04/2025 | SERVICOS DE TERCEIROS PJ   | FUNDICAO (D.V.)           | 3.288,61   |
+| 01/04/2025 | TELEFONE                   | INJECAO PLASTICA (D.V.)   | 3,69       |
+| 01/04/2025 | MANUTENCAO E REPAROS       | FUNDICAO (D.V.)           | 8.381,80   |
 
-✔ Column A = **DESC. CONTA**
+---
 
-✔ Column B = **DESC. C. CUSTO**
+# 📌 CSV Rules (STRICT)
 
-✔ Remaining columns = Months
-
-✔ Monetary values must be numeric
-
-✔ Empty cells can remain blank or contain "-"
+✔ Must contain headers in the first row  
+✔ Column order must match the structure above  
+✔ REALIZADO must be numeric (currency supported)  
+✔ MÊS must be a valid date format  
+✔ Empty values allowed but not recommended  
+✔ Encoding: UTF-8 recommended  
 
 ---
 
 # ⚙️ How It Works
 
 ```text
-                CSV Spreadsheet
-                       │
-                       ▼
-            Automatic Data Processing
-                       │
-                       ▼
-        Expense Classification by Sector
-                       │
-                       ▼
-        KPI Calculation & Aggregation
-                       │
-                       ▼
-     Interactive Charts & Visual Analytics
-```
-
----
-
-# 📊 Dashboard Includes
-
-- Total Expenses
-- Monthly Average
-- Largest Cost Category
-- Monthly Evolution
-- Cost Center Participation
-- Dynamic Filters
-- Search Engine
-- Interactive Charts
-
----
-
-# 🏭 Perfect For
-
-- Manufacturing
-- MES Systems
-- ERP Financial Reports
-- Cost Analysis
-- Industrial Companies
-- Accounting
-- Finance Teams
-- Business Intelligence
-
----
-
-# 🧩 Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| HTML5 | Structure |
-| CSS3 | Interface |
-| JavaScript | Application Logic |
-| Chart.js | Charts |
-| PapaParse | CSV Parsing |
-
----
-
-# 📁 Project Structure
-
-```text
-Uplar-Sophia
-│
-├── assets
-│   ├── css
-│   ├── js
-│   ├── icons
-│   └── images
-│       ├── banner.png
-│       └── preview.png
-│
-├── examples
-│   └── sample.csv
-│
-├── index.html
-└── README.md
-```
-
----
-
-# 📥 Sample CSV
-
-A sample CSV file is available inside:
-
-```text
-examples/sample.csv
-```
-
-Use it as a reference for your own spreadsheets.
-
----
-
-# 🌟 Philosophy
-
-> **"Where Data Becomes Wisdom."**
-
-Inspired by the Greek concept of **Sophia (Wisdom)**, this project aims to transform raw operational data into clear, meaningful insights through elegant visualizations.
-
----
-
-# 🗺 Roadmap
-
-- [ ] AI-powered Insights
-- [ ] Excel (.xlsx) Import
-- [ ] PDF Export
-- [ ] Dashboard Themes
-- [ ] Multiple Languages
-- [ ] Custom KPI Widgets
-- [ ] Saved Dashboards
-- [ ] User Authentication
-- [ ] Cloud Synchronization
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-Feel free to:
-
-- Fork the repository
-- Submit pull requests
-- Open issues
-- Suggest new features
-
----
-
-# 📜 License
-
-This project is licensed under the MIT License.
-
----
-
-<div align="center">
-
-## 🧠 Uplar Sophia
-
-### Transform CSV into Beautiful Dashboards
-
-Built with ❤️ by **Uplar**
-
-</div>
+        CSV Upload
+            │
+            ▼
+   Data Normalization Layer
+            │
+            ▼
+ Cost Center Classification
+            │
+            ▼
+ KPI & Aggregation Engine
+            │
+            ▼
+  Interactive Dashboard Render
