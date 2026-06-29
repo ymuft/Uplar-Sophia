@@ -6,7 +6,7 @@
 
 Turn structured CSV spreadsheets into beautiful, interactive dashboards with charts, KPIs, and actionable business insights.
 
-<img src="./assets/images/banner.png" alt="Uplar Sophia Banner"/>
+<img src="preview.png" alt="Uplar Sophia Banner"/>
 
 <br>
 
@@ -43,13 +43,13 @@ Just upload your CSV and start analyzing instantly.
 ## 📊 Dashboard View
 
 <p align="center">
-<img src="./assets/images/preview.png" width="100%">
+<img src="preview.png" width="100%">
 </p>
 
 ## 📄 Input Spreadsheet Example
 
 <p align="center">
-<img src="./assets/images/excel-preview.png" width="100%">
+<img src="2.png" width="100%">
 </p>
 
 ---
