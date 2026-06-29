@@ -97,14 +97,7 @@ Simply upload your spreadsheet and let Sophia build professional visualizations 
 
 ```bash
 Uplar-Sophia/
-│
-├── assets/
-│   ├── css/
-│   ├── js/
-│   ├── icons/
-│   └── images/
-│
-├── index.html
+├── dashboard.html
 ├── preview.png
 └── README.md
 ```
@@ -124,14 +117,6 @@ Sophia was created with one goal:
 ## 🌟 Why Sophia?
 
 Inspired by **Sophia**, the Greek concept of **Wisdom**, this project turns raw data into meaningful knowledge through elegant visualizations and intuitive analytics.
-
----
-
-## 📸 Screenshots
-
-| Dashboard | Analytics |
-|-----------|-----------|
-| *(Add screenshots here)* | *(Add screenshots here)* |
 
 ---
 
