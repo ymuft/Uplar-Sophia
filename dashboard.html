@@ -41,7 +41,6 @@
 
         .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-        /* CONTROLES DE FILTROS SUPERIORES */
         .filter-control-box {
             display: flex; align-items: center; gap: 8px;
             background: var(--bg-card); padding: 8px 14px; border-radius: var(--radius);
@@ -54,34 +53,48 @@
         }
         .filter-control-box select:hover, .filter-control-box input:focus { background: #e2e8f0; }
 
-        .upload-btn {
-            position: relative; background: var(--primary); color: white;
-            padding: 10px 18px; border-radius: var(--radius); font-weight: 600; font-size: 13px;
+        .btn {
+            position: relative; padding: 10px 18px; border-radius: var(--radius); font-weight: 600; font-size: 13px;
             cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-            transition: all 0.2s; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            transition: all 0.2s; border: none; outline: none;
         }
-        .upload-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-warning { background: var(--warning-light); color: var(--warning); border: 1px solid #fde68a; }
+        .btn-warning:hover { background: #fef3c7; transform: translateY(-1px); }
         .upload-btn input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
 
-        /* AREA DE FILTROS DE SETOR INTERATIVOS (PILLS) */
+        /* ÁREA DE FILTROS DE SETOR INTERATIVOS */
         .sectors-filter-area {
-            background: var(--bg-card); padding: 12px 16px; border-radius: var(--radius);
+            background: var(--bg-card); padding: 18px; border-radius: var(--radius);
             box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border);
         }
-        .sectors-filter-area p { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;}
-        .pills-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .sectors-filter-area-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 16px;
+        }
+        .sectors-filter-area-header p { font-size: 13px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; margin:0;}
         
-        .sector-pill {
-            padding: 6px 14px; background: #f1f5f9; border: 1px solid transparent;
-            border-radius: 20px; font-size: 12px; color: #475569; cursor: pointer;
-            user-select: none; transition: all 0.2s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;
+        .sectors-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .sector-group { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .sector-group-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #cbd5e1; }
+        .sector-group-header h4 { font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; text-transform: capitalize; }
+        
+        .group-toggle-btn {
+            font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e1;
+            background: #ffffff; cursor: pointer; color: var(--text-muted); transition: all 0.2s;
         }
-        .sector-pill:hover { background: #e2e8f0; }
-        .sector-pill input { display: none; }
-        .sector-pill input:checked + span { color: var(--primary); font-weight: 600; }
-        .sector-pill.active {
-            background: var(--primary-light); border-color: #bfdbfe; color: var(--primary); box-shadow: 0 2px 4px rgba(59, 130, 246, 0.05);
+        .group-toggle-btn:hover { background: var(--primary-light); color: var(--primary); border-color: #bfdbfe; }
+
+        .sub-pills-container { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sub-pill {
+            padding: 5px 12px; background: #ffffff; border: 1px solid #cbd5e1;
+            border-radius: 14px; font-size: 11px; color: #475569; cursor: pointer;
+            user-select: none; transition: all 0.2s; font-weight: 600; display: inline-flex; align-items: center;
         }
+        .sub-pill:hover { background: #e2e8f0; }
+        .sub-pill input { display: none; }
+        .sub-pill.active { background: var(--primary); border-color: var(--primary); color: #ffffff; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2); }
 
         /* GRIDS COMPACTOS */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
@@ -100,10 +113,8 @@
         .kpi-info .value { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
         .kpi-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-        /* HEIGHT DOS GRÁFICOS */
-        .chart-container { position: relative; height: 210px; width: 100%; }
+        .chart-container { position: relative; height: 210px; width: 100%; cursor: pointer; }
 
-        /* LISTA DE SETORES INTERATIVA */
         .sector-list { list-style: none; max-height: 210px; overflow-y: auto; padding-right: 4px; }
         .sector-list::-webkit-scrollbar { width: 4px; }
         .sector-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -113,30 +124,20 @@
         .progress-bg { background: #f1f5f9; height: 6px; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* TABELA GERAL (VISÃO DE RESUMO RESIDUAL) */
-        .table-responsive { overflow-x: auto; width: 100%; max-height: 400px; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f8fafc; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        th { background: #f8fafc; color: var(--text-muted); font-weight: 600; position: sticky; top: 0; }
         tbody tr:hover { background: #f8fafc; }
         .val-col { font-weight: 600; color: var(--text-main); }
-
-        .btn-load-more {
-            display: block; width: 100%; margin-top: 12px; padding: 9px; text-align: center;
-            background: #fff; border: 1px dashed #cbd5e1; border-radius: 8px;
-            color: var(--primary); font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 12px;
-        }
-        .btn-load-more:hover { background: var(--primary-light); border-color: var(--primary); }
         
-        /* POP-UP / MODAL ESTILIZADO */
+        /* MODAL GENÉRICO */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+            background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px);
             z-index: 1000; justify-content: center; align-items: center;
             opacity: 0; transition: opacity 0.25s ease;
         }
         .modal-overlay.show { display: flex; opacity: 1; }
-        
         .modal-box {
             background: var(--bg-card); padding: 22px; border-radius: var(--radius);
             max-width: 750px; width: 92%; max-height: 85vh; display: flex; flex-direction: column;
@@ -144,21 +145,23 @@
             transform: scale(0.95); transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .modal-overlay.show .modal-box { transform: scale(1); }
-        
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .modal-title h2 { font-size: 16px; font-weight: 700; color: var(--text-main); }
         .modal-title p { font-size: 12px; color: var(--text-muted); }
-        
         .modal-close-btn { background: #f1f5f9; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-weight: 700; transition: background 0.2s; }
         .modal-close-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+        /* GERENCIADOR DE GRUPOS (DRAG & DROP) */
+        #manageGroupsArea { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; overflow-y: auto; max-height: 50vh; padding-right: 5px; }
+        .drag-group { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 10px; min-height: 120px; transition: all 0.2s; }
+        .drag-group.drag-over { background: #eff6ff; border-color: var(--primary); }
+        .drag-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .group-name-input { font-size: 13px; font-weight: 700; color: var(--text-main); background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 2px 4px; width: 80%; }
+        .group-name-input:focus { background: #fff; border-color: var(--primary); outline: none; }
+        .drag-item { background: #fff; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 6px; cursor: grab; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 6px;}
+        .drag-item:active { cursor: grabbing; }
+        .drag-item:hover { border-color: #cbd5e1; }
         
-        .modal-filters-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .modal-filters-row label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
-        .modal-filters-row select, .modal-filters-row input { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; outline: none; cursor: pointer; background: #f8fafc; }
-        .modal-filters-row input { cursor: text; }
-
-        .modal-summary { background: var(--primary-light); padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: #1e40af; font-weight: 600; display: flex; justify-content: space-between; }
-
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
 
         @media (max-width: 1024px) {
@@ -173,7 +176,7 @@
     <header>
         <div class="header-title">
             <h1>Dashboard Analítico</h1>
-            <p>Clique nos gráficos para expandir e detalhar os dados de cada mês</p>
+            <p>Clique nos gráficos para expandir ou gerencie seus grupos de despesas</p>
         </div>
         
         <div class="header-actions">
@@ -189,9 +192,9 @@
                 <select id="selEndMonth"></select>
             </div>
 
-            <div class="upload-btn">
+            <div class="btn btn-primary upload-btn">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                Carregar Planilha CSV
+                Carregar CSV
                 <input type="file" id="csvFileInput" accept=".csv" />
             </div>
         </div>
@@ -206,8 +209,14 @@
     <div id="dashboard" style="display: none;">
         
         <div class="sectors-filter-area">
-            <p>Filtrar por Setores</p>
-            <div id="uiSectorsContainer" class="pills-container"></div>
+            <div class="sectors-filter-area-header">
+                <p>Filtrar por Grupos (Setores)</p>
+                <button id="btnOpenGroupManager" class="btn btn-warning">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Organizar Grupos
+                </button>
+            </div>
+            <div id="uiSectorsContainer" class="sectors-container"></div>
         </div>
 
         <div class="kpi-grid">
@@ -234,7 +243,7 @@
                     <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 </div>
                 <div class="kpi-info">
-                    <h3>Maior Categoria</h3>
+                    <h3>Maior Grupo (Consolidado)</h3>
                     <div class="value" id="kpiSetorName" style="font-size: 15px; margin-top:2px;">-</div>
                     <div class="subtitle" id="kpiSetorVal">R$ 0,00</div>
                 </div>
@@ -243,56 +252,29 @@
 
         <div class="charts-grid">
             <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Evolução de Gastos Totais</span>
-                </div>
-                <div class="chart-container">
-                    <canvas id="barChart"></canvas>
-                </div>
+                <div class="card-header"><span class="card-title">Evolução de Gastos Totais</span></div>
+                <div class="chart-container"><canvas id="barChart"></canvas></div>
             </div>
             <div class="card">
-                <div class="card-header"><span class="card-title">Participação por Setor</span></div>
+                <div class="card-header"><span class="card-title">Participação por Grupo Principal</span></div>
                 <ul class="sector-list" id="uiSectorList"></ul>
             </div>
         </div>
 
         <div class="charts-pies">
             <div class="card">
-                <div class="card-header"><span class="card-title">Distribuição por Setor (Todos)</span></div>
-                <div class="chart-container">
-                    <canvas id="pieChart"></canvas>
-                </div>
+                <div class="card-header"><span class="card-title">Distribuição por Grupo Principal</span></div>
+                <div class="chart-container"><canvas id="pieChart"></canvas></div>
             </div>
             <div class="card">
-                <div class="card-header"><span class="card-title">Gastos por Descrição (Todos)</span></div>
-                <div class="chart-container">
-                    <canvas id="pieDescChart"></canvas>
-                </div>
+                <div class="card-header"><span class="card-title">Gastos por Descrição</span></div>
+                <div class="chart-container"><canvas id="pieDescChart"></canvas></div>
             </div>
         </div>
         
         <div class="card" style="margin-bottom: 20px;">
-            <div class="card-header">
-                <span class="card-title">Curva de Tendência Temporal</span>
-            </div>
-            <div class="chart-container" style="height: 250px;">
-                <canvas id="lineChart"></canvas>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Histórico de Lançamentos Gerais</span>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr><th>Data</th><th>Descrição</th><th>Setor</th><th>Valor (R$)</th></tr>
-                    </thead>
-                    <tbody id="uiTableBody"></tbody>
-                </table>
-            </div>
-            <button class="btn-load-more" id="btnLoadMore" style="display: none;">Ver mais despesas...</button>
+            <div class="card-header"><span class="card-title">Curva de Tendência Temporal</span></div>
+            <div class="chart-container" style="height: 250px;"><canvas id="lineChart"></canvas></div>
         </div>
     </div>
 </div>
@@ -302,50 +284,94 @@
         <div class="modal-header">
             <div class="modal-title">
                 <h2 id="modalMonthTitle">Detalhamento de Contas</h2>
-                <p>Gastos consolidados do período selecionado</p>
+                <p>Gastos consolidados com base na sua seleção</p>
             </div>
-            <button class="modal-close-btn" id="btnCloseModal">&times;</button>
+            <button class="modal-close-btn" onclick="closeModal('detailsModal')">&times;</button>
         </div>
-        
-        <div class="modal-filters-row">
-            <label for="modalSectorFilter">Categoria:</label>
-            <select id="modalSectorFilter">
-                <option value="all">Todas as categorias</option>
-            </select>
-            
-            <label for="modalDescFilter" style="margin-left: auto;">Buscar Descrição:</label>
-            <input type="text" id="modalDescFilter" placeholder="Ex: Conta de Luz...">
+        <div style="display: flex; gap:10px; margin-bottom:12px; align-items:center;">
+            <select id="modalSectorFilter" style="padding: 6px; border-radius: 6px; border: 1px solid var(--border);"><option value="all">Todos os Grupos</option></select>
+            <input type="text" id="modalDescFilter" placeholder="Buscar Descrição..." style="padding: 6px; border-radius: 6px; border: 1px solid var(--border); flex-grow:1;">
         </div>
-
-        <div class="modal-summary">
-            <span>TOTAL EXIBIDO:</span>
-            <span id="modalMonthTotal">R$ 0,00</span>
+        <div style="background: var(--primary-light); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-weight: 600; color: #1e40af; display: flex; justify-content: space-between;">
+            <span>TOTAL EXIBIDO:</span> <span id="modalMonthTotal">R$ 0,00</span>
         </div>
-        <div class="table-responsive" style="max-height: 45vh;">
+        <div style="overflow-x: auto; max-height: 400px;">
             <table>
-                <thead>
-                    <tr><th>Data</th><th>Descrição da Conta</th><th>Setor</th><th>Valor (R$)</th></tr>
-                </thead>
+                <thead><tr><th>Data</th><th>Descrição</th><th>Sub-Setor Original</th><th>Grupo</th><th>Valor</th></tr></thead>
                 <tbody id="uiModalTableBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
+<div class="modal-overlay" id="groupManagerModal">
+    <div class="modal-box" style="max-width: 900px;">
+        <div class="modal-header">
+            <div class="modal-title">
+                <h2>Gerenciador de Grupos (Setores)</h2>
+                <p>Arraste os subsetores entre os grupos. Clique no nome do grupo para renomeá-lo.</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeGroupManager()">&times;</button>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <button class="btn btn-primary" onclick="createNewGroup()">+ Criar Novo Grupo Vazio</button>
+        </div>
+
+        <div id="manageGroupsArea">
+            </div>
+
+        <div style="margin-top: 20px; text-align: right; border-top: 1px solid var(--border); padding-top: 15px;">
+            <button class="btn" style="background:#e2e8f0; color:#0f172a;" onclick="closeGroupManager()">Cancelar</button>
+            <button class="btn btn-primary" onclick="saveGroupChanges()">Salvar e Atualizar Dashboard</button>
+        </div>
+    </div>
+</div>
+
 <script>
     let allData = [];
-    let selectedSectors = new Set();
-    let charts = {}; 
+    let selectedSectors = new Set(); // Armazena os setores ORIGINAIS do CSV que estão checados
+    let sectorDictionary = {}; // Mapeamento: "Nome Original do CSV" -> "Nome do Grupo Consolidado"
     
+    let charts = {}; 
     let globalStartMonth = null;
     let globalEndMonth = null;
-    let currentTableData = [];
-    let currentModalData = []; // Variável global para armazenar os dados do modal ativo
-    let tableVisibleRows = 10;
+    let currentModalData = []; 
     let monthDictionary = {};
 
     const formatBRL = (val) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
 
+    // ==========================================
+    // ALGORITMO DE AGRUPAMENTO INTELIGENTE
+    // ==========================================
+    function autoDetectGroup(rawSector) {
+        if (!rawSector) return 'Outros';
+        const upper = rawSector.toUpperCase();
+        
+        // Regras de negócio inteligentes baseadas no seu print
+        if (upper.includes('MONTAGEM') || upper.startsWith('MTG')) return 'Montagem';
+        if (upper.includes('FUNDICAO') || upper.includes('FUNDIÇÃO')) return 'Fundição';
+        if (upper.includes('USINAGEM')) return 'Usinagem';
+        if (upper.includes('ESTAMPARIA')) return 'Estamparia';
+        if (upper.includes('INJECAO') || upper.includes('INJEÇÃO')) return 'Injeção Plástica';
+        if (upper.includes('PRENSAGEM')) return 'Prensagem';
+        if (upper.includes('PROD') || upper.includes('PRODUCAO')) return 'Produção';
+        if (upper.includes('SUBMONTAGEM')) return 'Submontagem';
+        
+        // Fallback genérico: Pega a primeira palavra antes de espaço, hífen ou parêntese
+        let firstWord = rawSector.split(/[\s\(\-]/)[0];
+        if (firstWord.length > 2) {
+            return firstWord.charAt(0).toUpperCase() + firstWord.slice(1).toLowerCase();
+        }
+        return rawSector;
+    }
+
+    // Retorna a qual grupo o setor original pertence atualmente
+    const getMappedGroup = (rawSector) => sectorDictionary[rawSector] || autoDetectGroup(rawSector);
+
+    // ==========================================
+    // PROCESSAMENTO DO CSV
+    // ==========================================
     document.getElementById('csvFileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -358,6 +384,8 @@
         allData = [];
         selectedSectors.clear();
         monthDictionary = {};
+        sectorDictionary = {}; // Reseta o mapeamento
+
         const lines = csvText.split('\n').filter(line => line.trim() !== '');
         if (lines.length < 2) return;
 
@@ -368,7 +396,7 @@
             if (row.length >= 4) {
                 const date = row[0].replace(/"/g, '').trim();
                 const desc = row[1].replace(/"/g, '').trim();
-                const sector = row[2].replace(/"/g, '').trim();
+                const sector = row[2].replace(/"/g, '').trim(); // Nome original
                 let valStr = row[3].replace(/"/g, '').trim();
 
                 if (valStr.includes(',')) valStr = valStr.replace(/\./g, '').replace(',', '.');
@@ -384,8 +412,16 @@
                         sortKey = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}`;
                         monthDictionary[sortKey] = monthKey;
                     }
+                    
                     allData.push({ date, desc, sector, value: valNum, monthKey, sortKey });
-                    if(sector) selectedSectors.add(sector);
+                    
+                    if(sector) {
+                        selectedSectors.add(sector);
+                        // Se for a primeira vez vendo esse setor, aplica auto-detect
+                        if(!sectorDictionary[sector]) {
+                            sectorDictionary[sector] = autoDetectGroup(sector);
+                        }
+                    }
                 }
             }
         }
@@ -402,66 +438,107 @@
         }
     }
 
+    // ==========================================
+    // RENDERIZAÇÃO DA INTERFACE PRINCIPAL
+    // ==========================================
     function initDateFilters() {
         const sortedUniqueMonths = Object.keys(monthDictionary).sort();
         const selStart = document.getElementById('selStartMonth');
         const selEnd = document.getElementById('selEndMonth');
-        
         selStart.innerHTML = ''; selEnd.innerHTML = '';
-
         sortedUniqueMonths.forEach(key => {
-            const opt1 = document.createElement('option'); opt1.value = key; opt1.text = monthDictionary[key];
-            selStart.appendChild(opt1);
-            const opt2 = document.createElement('option'); opt2.value = key; opt2.text = monthDictionary[key];
-            selEnd.appendChild(opt2);
+            selStart.add(new Option(monthDictionary[key], key));
+            selEnd.add(new Option(monthDictionary[key], key));
         });
-
         globalStartMonth = sortedUniqueMonths[0];
         globalEndMonth = sortedUniqueMonths[sortedUniqueMonths.length - 1];
-        
-        selStart.value = globalStartMonth;
-        selEnd.value = globalEndMonth;
+        selStart.value = globalStartMonth; selEnd.value = globalEndMonth;
 
         const onDateChange = () => {
             if(selStart.value > selEnd.value) selEnd.value = selStart.value;
-            globalStartMonth = selStart.value;
-            globalEndMonth = selEnd.value;
+            globalStartMonth = selStart.value; globalEndMonth = selEnd.value;
             updateDashboard();
         };
-
         selStart.addEventListener('change', onDateChange);
         selEnd.addEventListener('change', onDateChange);
     }
-
     document.getElementById('uiGlobalDescFilter').addEventListener('input', updateDashboard);
 
     function renderSectorPills() {
         const container = document.getElementById('uiSectorsContainer');
         container.innerHTML = '';
         
-        const uniqueSectorsList = Array.from(new Set(allData.map(d => d.sector))).filter(Boolean).sort();
+        // Agrupa os setores originais baseados no Dictionary
+        const groupedSectors = {};
+        Object.keys(sectorDictionary).forEach(rawSector => {
+            const groupName = sectorDictionary[rawSector];
+            if (!groupedSectors[groupName]) groupedSectors[groupName] = [];
+            groupedSectors[groupName].push(rawSector);
+        });
         
-        uniqueSectorsList.forEach(sector => {
-            const pill = document.createElement('div');
-            pill.className = 'sector-pill active';
-            pill.innerHTML = `<input type="checkbox" value="${sector}" checked><span>✓ ${sector}</span>`;
+        // Ordena os grupos alfabeticamente
+        const sortedGroups = Object.keys(groupedSectors).sort();
+
+        sortedGroups.forEach(groupName => {
+            const rawSectorsInGroup = groupedSectors[groupName].sort();
             
-            pill.addEventListener('click', function(e) {
-                const cb = this.querySelector('input');
-                if(e.target !== cb) cb.checked = !cb.checked;
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'sector-group';
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'sector-group-header';
+            headerDiv.innerHTML = `
+                <h4><svg width="14" height="14" style="color:var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg> ${groupName}</h4>
+            `;
+            
+            const toggleAllBtn = document.createElement('button');
+            toggleAllBtn.className = 'group-toggle-btn';
+            toggleAllBtn.textContent = 'Inverter';
+            headerDiv.appendChild(toggleAllBtn);
+            groupDiv.appendChild(headerDiv);
+
+            const subsContainer = document.createElement('div');
+            subsContainer.className = 'sub-pills-container';
+
+            const subPillElements = [];
+
+            rawSectorsInGroup.forEach(rawSector => {
+                // Tenta limpar o nome para exibição na pill (remover o nome do grupo se for redundante)
+                let regex = new RegExp(groupName, "i");
+                let displayName = rawSector.replace(regex, '').replace(/^[\s\-\(\)]+|[\s\-\(\)]+$/g, '').trim();
+                if(!displayName || displayName.toLowerCase() === groupName.toLowerCase()) displayName = 'Geral';
+
+                const pill = document.createElement('div');
+                const isChecked = selectedSectors.has(rawSector);
+                pill.className = `sub-pill ${isChecked ? 'active' : ''}`;
+                pill.innerHTML = `<input type="checkbox" value="${rawSector}" ${isChecked ? 'checked' : ''}><span>${displayName}</span>`;
+                pill.title = rawSector; // tooltip com nome original
                 
-                if(cb.checked) {
-                    this.classList.add('active');
-                    this.querySelector('span').textContent = `✓ ${sector}`;
-                    selectedSectors.add(sector);
-                } else {
-                    this.classList.remove('active');
-                    this.querySelector('span').textContent = sector;
-                    selectedSectors.delete(sector);
-                }
+                pill.addEventListener('click', function(e) {
+                    const cb = this.querySelector('input');
+                    if(e.target !== cb) cb.checked = !cb.checked;
+                    
+                    if(cb.checked) { this.classList.add('active'); selectedSectors.add(rawSector); } 
+                    else { this.classList.remove('active'); selectedSectors.delete(rawSector); }
+                    updateDashboard();
+                });
+                
+                subPillElements.push({ pill, cb: pill.querySelector('input'), rawSector });
+                subsContainer.appendChild(pill);
+            });
+
+            toggleAllBtn.addEventListener('click', () => {
+                const allSelected = subPillElements.every(el => el.cb.checked);
+                subPillElements.forEach(el => {
+                    el.cb.checked = !allSelected;
+                    if (el.cb.checked) { el.pill.classList.add('active'); selectedSectors.add(el.rawSector); } 
+                    else { el.pill.classList.remove('active'); selectedSectors.delete(el.rawSector); }
+                });
                 updateDashboard();
             });
-            container.appendChild(pill);
+
+            groupDiv.appendChild(subsContainer);
+            container.appendChild(groupDiv);
         });
     }
 
@@ -476,26 +553,21 @@
         );
 
         let totalVal = 0;
-        const sectorData = {};
+        const groupData = {}; // Usa o Grupo Consolidado
         const monthData = {};
-        const descData = {}; // Novo objeto para agregar por Descrição da Conta
+        const descData = {}; 
 
-        const sortedUniqueMonths = Object.keys(monthDictionary).sort();
-        sortedUniqueMonths.forEach(m => {
-            if(m >= globalStartMonth && m <= globalEndMonth) {
-                monthData[m] = { label: monthDictionary[m], total: 0 };
-            }
+        Object.keys(monthDictionary).forEach(m => {
+            if(m >= globalStartMonth && m <= globalEndMonth) monthData[m] = { label: monthDictionary[m], total: 0 };
         });
 
         filteredData.forEach(d => {
             totalVal += d.value;
-            
-            if(!sectorData[d.sector]) sectorData[d.sector] = 0;
-            sectorData[d.sector] += d.value;
+            const groupName = getMappedGroup(d.sector);
+            if(!groupData[groupName]) groupData[groupName] = 0;
+            groupData[groupName] += d.value;
             
             if(monthData[d.sortKey]) monthData[d.sortKey].total += d.value;
-            
-            // Agrupando por Descrição para o novo gráfico
             if(!descData[d.desc]) descData[d.desc] = 0;
             descData[d.desc] += d.value;
         });
@@ -504,10 +576,10 @@
         document.getElementById('kpiTotal').textContent = formatBRL(totalVal);
         document.getElementById('kpiMedia').textContent = formatBRL(totalVal / numMonths);
 
-        const topSectorEntry = Object.entries(sectorData).sort((a,b) => b[1] - a[1])[0];
-        if(topSectorEntry) {
-            document.getElementById('kpiSetorName').textContent = topSectorEntry[0];
-            document.getElementById('kpiSetorVal').textContent = formatBRL(topSectorEntry[1]);
+        const topGroupEntry = Object.entries(groupData).sort((a,b) => b[1] - a[1])[0];
+        if(topGroupEntry) {
+            document.getElementById('kpiSetorName').textContent = topGroupEntry[0];
+            document.getElementById('kpiSetorVal').textContent = formatBRL(topGroupEntry[1]);
         } else {
             document.getElementById('kpiSetorName').textContent = "-";
             document.getElementById('kpiSetorVal').textContent = "R$ 0,00";
@@ -516,47 +588,159 @@
         const sortedMonths = Object.keys(monthData).sort();
         const labelsMonths = sortedMonths.map(k => monthData[k].label);
         const dataMonths = sortedMonths.map(k => monthData[k].total);
-        
-        const sortedSectorsArr = Object.entries(sectorData).sort((a,b) => b[1] - a[1]);
-        const sortedDescArr = Object.entries(descData).sort((a,b) => b[1] - a[1]); // Top Descrições
+        const sortedGroupsArr = Object.entries(groupData).sort((a,b) => b[1] - a[1]);
+        const sortedDescArr = Object.entries(descData).sort((a,b) => b[1] - a[1]); 
         
         renderBarChart(labelsMonths, dataMonths, sortedMonths);
-        renderPieChart(sortedSectorsArr);
-        renderDescPieChart(sortedDescArr); // Chamada para o novo gráfico
+        renderPieChart(sortedGroupsArr);
+        renderDescPieChart(sortedDescArr); 
         renderLineChart(labelsMonths, dataMonths, sortedMonths);
-        renderSectorList(sortedSectorsArr, totalVal);
-        
-        currentTableData = filteredData.sort((a, b) => b.date.split('/').reverse().join('').localeCompare(a.date.split('/').reverse().join('')));
-        tableVisibleRows = 10;
-        renderTableRows();
+        renderSectorList(sortedGroupsArr, totalVal);
     }
 
-    // --- EXPANDIR VIA POP-UP (MODAL) ---
-    function openDetailsModal(monthSortKey, monthLabel) {
+    // ==========================================
+    // SISTEMA DE DRAG & DROP (GERENCIAR GRUPOS)
+    // ==========================================
+    let tempSectorDictionary = {}; // Dicionário temporário enquanto o modal está aberto
+
+    document.getElementById('btnOpenGroupManager').addEventListener('click', () => {
+        // Clona o dicionário atual para poder cancelar sem afetar o dashboard
+        tempSectorDictionary = JSON.parse(JSON.stringify(sectorDictionary));
+        renderGroupManager();
+        const modal = document.getElementById('groupManagerModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+    });
+
+    function closeGroupManager() {
+        const modal = document.getElementById('groupManagerModal');
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 200);
+    }
+
+    function saveGroupChanges() {
+        // Atualiza o dicionário real e re-renderiza o painel
+        sectorDictionary = JSON.parse(JSON.stringify(tempSectorDictionary));
+        renderSectorPills();
+        updateDashboard();
+        closeGroupManager();
+    }
+
+    function createNewGroup() {
+        const newName = prompt("Digite o nome do novo grupo:");
+        if(!newName || newName.trim() === "") return;
+        // Adiciona um grupo visualmente renderizando com um item dummy invisível (ou só refaz a tela)
+        renderGroupManager(newName.trim()); 
+    }
+
+    function renderGroupManager(forceNewGroup = null) {
+        const area = document.getElementById('manageGroupsArea');
+        area.innerHTML = '';
+        
+        // Agrupa baseado no dicionário temporário
+        const grouped = {};
+        Object.keys(tempSectorDictionary).forEach(raw => {
+            const gName = tempSectorDictionary[raw];
+            if(!grouped[gName]) grouped[gName] = [];
+            grouped[gName].push(raw);
+        });
+
+        if (forceNewGroup && !grouped[forceNewGroup]) {
+            grouped[forceNewGroup] = [];
+        }
+
+        const sortedGroupNames = Object.keys(grouped).sort();
+
+        sortedGroupNames.forEach(gName => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'drag-group';
+            groupDiv.dataset.group = gName;
+            
+            // Eventos de Drop
+            groupDiv.addEventListener('dragover', e => { e.preventDefault(); groupDiv.classList.add('drag-over'); });
+            groupDiv.addEventListener('dragleave', e => groupDiv.classList.remove('drag-over'));
+            groupDiv.addEventListener('drop', handleDrop);
+
+            const header = document.createElement('div');
+            header.className = 'drag-group-header';
+            
+            const inputName = document.createElement('input');
+            inputName.className = 'group-name-input';
+            inputName.value = gName;
+            inputName.title = "Clique para renomear este grupo";
+            
+            // Lógica para renomear o grupo inteiro
+            inputName.addEventListener('change', (e) => {
+                const newName = e.target.value.trim();
+                if(newName && newName !== gName) {
+                    Object.keys(tempSectorDictionary).forEach(raw => {
+                        if(tempSectorDictionary[raw] === gName) tempSectorDictionary[raw] = newName;
+                    });
+                    renderGroupManager(); // Recarrega a tela
+                } else {
+                    e.target.value = gName; // reverte se vazio
+                }
+            });
+
+            header.appendChild(inputName);
+            groupDiv.appendChild(header);
+
+            grouped[gName].forEach(rawSector => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'drag-item';
+                itemDiv.draggable = true;
+                itemDiv.dataset.raw = rawSector;
+                itemDiv.innerHTML = `<svg width="12" height="12" fill="none" stroke="#94a3b8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg> ${rawSector}`;
+                
+                itemDiv.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', rawSector);
+                    setTimeout(() => itemDiv.style.opacity = '0.5', 0);
+                });
+                itemDiv.addEventListener('dragend', () => itemDiv.style.opacity = '1');
+                
+                groupDiv.appendChild(itemDiv);
+            });
+
+            area.appendChild(groupDiv);
+        });
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        const rawSector = e.dataTransfer.getData('text/plain');
+        const targetGroup = this.dataset.group;
+        
+        if(rawSector && targetGroup) {
+            tempSectorDictionary[rawSector] = targetGroup;
+            renderGroupManager(); // Re-renderiza o modal para refletir a mudança
+        }
+    }
+
+
+    // ==========================================
+    // CÓDIGO DOS GRÁFICOS E MODAL DE DETALHES (Mantidos e Adaptados)
+    // ==========================================
+    function openDetailsModal(monthSortKey, monthLabel, isMonth = true, descLabel = null) {
         const globalDescSearch = document.getElementById('uiGlobalDescFilter').value.toLowerCase();
         
-        currentModalData = allData.filter(d => 
-            d.sortKey === monthSortKey && 
-            selectedSectors.has(d.sector) &&
-            (globalDescSearch === '' || d.desc.toLowerCase().includes(globalDescSearch))
-        );
+        if (isMonth) {
+            currentModalData = allData.filter(d => d.sortKey === monthSortKey && selectedSectors.has(d.sector) && (globalDescSearch === '' || d.desc.toLowerCase().includes(globalDescSearch)));
+            document.getElementById('modalMonthTitle').textContent = `Despesas Detalhadas: ${monthLabel}`;
+        } else {
+            currentModalData = allData.filter(d => d.sortKey >= globalStartMonth && d.sortKey <= globalEndMonth && selectedSectors.has(d.sector) && d.desc === descLabel);
+            document.getElementById('modalMonthTitle').textContent = `Detalhamento de Gasto: ${descLabel}`;
+        }
         
         currentModalData.sort((a, b) => b.value - a.value);
-
-        document.getElementById('modalMonthTitle').textContent = `Despesas Detalhadas: ${monthLabel}`;
-        document.getElementById('modalDescFilter').value = ''; // Reseta o filtro de texto do modal
+        document.getElementById('modalDescFilter').value = ''; 
         
         const modalFilter = document.getElementById('modalSectorFilter');
-        modalFilter.innerHTML = '<option value="all">Todas as categorias</option>';
-        const uniqueSectors = Array.from(new Set(currentModalData.map(d => d.sector))).sort();
-        uniqueSectors.forEach(sec => {
-            const opt = document.createElement('option'); opt.value = sec; opt.text = sec;
-            modalFilter.appendChild(opt);
-        });
-        modalFilter.value = 'all'; 
-
+        modalFilter.innerHTML = '<option value="all">Todos os Grupos</option>';
+        const uniqueGroups = Array.from(new Set(currentModalData.map(d => getMappedGroup(d.sector)))).sort();
+        uniqueGroups.forEach(g => { modalFilter.add(new Option(g, g)); });
+        
         renderModalTable(currentModalData); 
-
         const modalEl = document.getElementById('detailsModal');
         modalEl.style.display = 'flex';
         setTimeout(() => modalEl.classList.add('show'), 10);
@@ -565,12 +749,10 @@
     function renderModalTable(data) {
         let totalModal = data.reduce((acc, curr) => acc + curr.value, 0);
         document.getElementById('modalMonthTotal').textContent = formatBRL(totalModal);
-
         const tbody = document.getElementById('uiModalTableBody');
         tbody.innerHTML = '';
-
         if(data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhum lançamento encontrado para a seleção.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Nenhum lançamento.</td></tr>';
         } else {
             data.forEach(item => {
                 const tr = document.createElement('tr');
@@ -578,6 +760,7 @@
                     <td style="color: var(--text-muted);">${item.date}</td>
                     <td style="font-weight:500;">${item.desc}</td>
                     <td style="color: var(--text-muted); font-size:11px;">${item.sector}</td>
+                    <td style="color: var(--primary); font-size:11px; font-weight:600;">${getMappedGroup(item.sector)}</td>
                     <td class="val-col">${formatBRL(item.value)}</td>
                 `;
                 tbody.appendChild(tr);
@@ -586,210 +769,80 @@
     }
 
     function applyModalFilters() {
-        const selectedSector = document.getElementById('modalSectorFilter').value;
+        const selGroup = document.getElementById('modalSectorFilter').value;
         const textDesc = document.getElementById('modalDescFilter').value.toLowerCase();
-        
-        let filteredData = currentModalData;
-        if (selectedSector !== 'all') {
-            filteredData = filteredData.filter(d => d.sector === selectedSector);
-        }
-        if (textDesc.trim() !== '') {
-            filteredData = filteredData.filter(d => d.desc.toLowerCase().includes(textDesc));
-        }
-        
-        renderModalTable(filteredData);
+        let filtered = currentModalData;
+        if (selGroup !== 'all') filtered = filtered.filter(d => getMappedGroup(d.sector) === selGroup);
+        if (textDesc.trim() !== '') filtered = filtered.filter(d => d.desc.toLowerCase().includes(textDesc));
+        renderModalTable(filtered);
     }
 
     document.getElementById('modalSectorFilter').addEventListener('change', applyModalFilters);
     document.getElementById('modalDescFilter').addEventListener('input', applyModalFilters);
 
-    function closeModal() {
-        const modalEl = document.getElementById('detailsModal');
+    function closeModal(id) {
+        const modalEl = document.getElementById(id);
         modalEl.classList.remove('show');
         setTimeout(() => modalEl.style.display = 'none', 200);
     }
 
-    document.getElementById('btnCloseModal').addEventListener('click', closeModal);
-    document.getElementById('detailsModal').addEventListener('click', function(e) {
-        if(e.target === this) closeModal();
-    });
-
-    // --- CONFIGURAÇÕES GRÁFICAS (CHART.JS) ---
+    // Configuração Chart.js
     function renderBarChart(labels, data, rawKeys) {
         if(charts.bar) charts.bar.destroy();
-        charts.bar = new Chart(document.getElementById('barChart').getContext('2d'), {
-            type: 'bar',
-            data: { labels: labels, datasets: [{ data: data, backgroundColor: '#3b82f6', hoverBackgroundColor: '#1d4ed8', borderRadius: 4, barPercentage: 0.55 }] },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) } } },
-                scales: { y: { beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { font:{size:10}, callback:(v) => 'R$ '+ (v/1000).toFixed(0)+'k' } }, x: { grid: { display: false }, ticks: { font:{size:10} } } },
-                onClick: (e, activeEls) => { if(activeEls.length > 0) openDetailsModal(rawKeys[activeEls[0].index], labels[activeEls[0].index]); }
+        charts.bar = new Chart(document.getElementById('barChart'), {
+            type: 'bar', data: { labels, datasets: [{ data, backgroundColor: '#3b82f6', borderRadius: 4 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                onClick: (e, els) => { if(els.length > 0) openDetailsModal(rawKeys[els[0].index], labels[els[0].index], true); }
             }
         });
     }
 
     function renderLineChart(labels, data, rawKeys) {
         if(charts.line) charts.line.destroy();
-        charts.line = new Chart(document.getElementById('lineChart').getContext('2d'), {
-            type: 'line',
-            data: { datasets: [{ data: data, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.06)', borderWidth: 2.5, fill: true, tension: 0.35, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#fff', pointBorderWidth: 2.5 }] },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) } } },
-                scales: { y: { beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { display: false } }, x: { labels: labels, grid: { display: false }, ticks: { font:{size:10} } } },
-                onClick: (e, activeEls) => { if(activeEls.length > 0) openDetailsModal(rawKeys[activeEls[0].index], labels[activeEls[0].index]); }
+        charts.line = new Chart(document.getElementById('lineChart'), {
+            type: 'line', data: { labels, datasets: [{ data, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                onClick: (e, els) => { if(els.length > 0) openDetailsModal(rawKeys[els[0].index], labels[els[0].index], true); }
             }
         });
     }
 
-    function renderPieChart(sectorsArr) {
+    function renderPieChart(arr) {
         if(charts.pie) charts.pie.destroy();
-
-        const palette = ['#3b82f6','#10b981','#f59e0b','#6366f1','#ef4444','#14b8a6','#f97316','#8b5cf6','#ec4899','#0ea5e9','#84cc16','#a78bfa','#fb923c','#34d399','#60a5fa','#f472b6','#fbbf24','#4ade80','#e879f9','#38bdf8'];
-        const labels = sectorsArr.map(s => s[0]);
-        const data   = sectorsArr.map(s => s[1]);
-        const colors = labels.map((_, i) => palette[i % palette.length]);
-        const total  = data.reduce((a, b) => a + b, 0);
-
-        const useBar = labels.length > 6;
-        const chartEl = document.getElementById('pieChart');
-        const containerEl = chartEl.closest('.chart-container');
-        if (useBar) {
-            const dynH = Math.max(210, labels.length * 28);
-            containerEl.style.height = dynH + 'px';
-        } else {
-            containerEl.style.height = '210px';
-        }
-
-        if (useBar) {
-            charts.pie = new Chart(chartEl.getContext('2d'), {
-                type: 'bar',
-                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }] },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
-                    },
-                    scales: {
-                        x: { beginAtZero: true, grid: { borderDash:[4,4] }, ticks: { font:{size:10}, callback: v => 'R$'+(v/1000).toFixed(0)+'k' } },
-                        y: { grid: { display: false }, ticks: { font:{size:10} } }
-                    }
-                }
-            });
-        } else {
-            charts.pie = new Chart(chartEl.getContext('2d'), {
-                type: 'doughnut',
-                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, cutout: '65%' }] },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: {size: 10} } },
-                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
-                    }
-                }
-            });
-        }
+        const labels = arr.map(s => s[0]), data = arr.map(s => s[1]);
+        const colors = ['#3b82f6','#10b981','#f59e0b','#6366f1','#ef4444','#14b8a6','#f97316','#8b5cf6'];
+        charts.pie = new Chart(document.getElementById('pieChart'), {
+            type: arr.length > 6 ? 'bar' : 'doughnut',
+            data: { labels, datasets: [{ data, backgroundColor: colors }] },
+            options: { indexAxis: arr.length > 6 ? 'y' : 'x', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: arr.length <= 6, position: 'right' } } }
+        });
     }
 
-    // NOVO: Gráfico de Pizza por Descrição da Conta
-    function renderDescPieChart(descArr) {
+    function renderDescPieChart(arr) {
         if(charts.pieDesc) charts.pieDesc.destroy();
-
-        const palette = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#0ea5e9','#10b981','#f59e0b','#3b82f6','#6366f1','#ef4444','#84cc16','#a78bfa','#fb923c','#34d399','#60a5fa','#f472b6','#fbbf24','#4ade80','#e879f9','#38bdf8'];
-        const labels = descArr.map(s => s[0]);
-        const data   = descArr.map(s => s[1]);
-        const colors = labels.map((_, i) => palette[i % palette.length]);
-        const total  = data.reduce((a, b) => a + b, 0);
-
-        const useBar = labels.length > 6;
-        const chartEl = document.getElementById('pieDescChart');
-        const containerEl = chartEl.closest('.chart-container');
-        if (useBar) {
-            const dynH = Math.max(210, labels.length * 28);
-            containerEl.style.height = dynH + 'px';
-        } else {
-            containerEl.style.height = '210px';
-        }
-
-        if (useBar) {
-            charts.pieDesc = new Chart(chartEl.getContext('2d'), {
-                type: 'bar',
-                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderRadius: 4, barPercentage: 0.7 }] },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
-                    },
-                    scales: {
-                        x: { beginAtZero: true, grid: { borderDash:[4,4] }, ticks: { font:{size:10}, callback: v => 'R$'+(v/1000).toFixed(0)+'k' } },
-                        y: { grid: { display: false }, ticks: { font:{size:10} } }
-                    }
-                }
-            });
-        } else {
-            charts.pieDesc = new Chart(chartEl.getContext('2d'), {
-                type: 'doughnut',
-                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, cutout: '65%' }] },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: {size: 10} } },
-                        tooltip: { callbacks: { label: (ctx) => ' ' + formatBRL(ctx.raw) + '  (' + ((ctx.raw/total)*100).toFixed(1) + '%)' } }
-                    }
-                }
-            });
-        }
+        const labels = arr.map(s => s[0]), data = arr.map(s => s[1]);
+        const colors = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#0ea5e9','#10b981'];
+        charts.pieDesc = new Chart(document.getElementById('pieDescChart'), {
+            type: arr.length > 6 ? 'bar' : 'doughnut',
+            data: { labels, datasets: [{ data, backgroundColor: colors }] },
+            options: { 
+                indexAxis: arr.length > 6 ? 'y' : 'x', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                onClick: (e, els) => { if(els.length > 0) openDetailsModal(null, null, false, labels[els[0].index]); }
+            }
+        });
     }
 
-    function renderSectorList(sectorsArr, totalVal) {
+    function renderSectorList(arr, totalVal) {
         const container = document.getElementById('uiSectorList'); container.innerHTML = '';
         const colors = ['#3b82f6', '#10b981', '#f59e0b', '#6366f1', '#ef4444'];
-        sectorsArr.forEach((s, idx) => {
+        arr.forEach((s, idx) => {
             const pct = totalVal > 0 ? ((s[1] / totalVal) * 100).toFixed(1) : 0;
             const li = document.createElement('li'); li.className = 'sector-item';
-            li.innerHTML = `
-                <div class="sector-item-header"><span>${s[0]}</span><span class="sector-item-val">${formatBRL(s[1])} (${pct}%)</span></div>
-                <div class="progress-bg"><div class="progress-fill" style="width: ${pct}%; background-color: ${colors[idx % colors.length]};"></div></div>
-            `;
+            li.innerHTML = `<div class="sector-item-header"><span>${s[0]}</span><span>${formatBRL(s[1])} (${pct}%)</span></div>
+                            <div class="progress-bg"><div class="progress-fill" style="width: ${pct}%; background-color: ${colors[idx % colors.length]};"></div></div>`;
             container.appendChild(li);
         });
     }
-
-    // --- TABELA RESIDUAL DE HISTÓRICO GERAL ---
-    function renderTableRows() {
-        const tbody = document.getElementById('uiTableBody');
-        tbody.innerHTML = '';
-
-        const slicedData = currentTableData.slice(0, tableVisibleRows);
-        slicedData.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="color: var(--text-muted);">${item.date}</td>
-                <td style="font-weight: 500;">${item.desc}</td>
-                <td style="font-size: 11px; color: var(--text-muted);">${item.sector}</td>
-                <td class="val-col">${formatBRL(item.value)}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        const btnLoadMore = document.getElementById('btnLoadMore');
-        if (currentTableData.length > tableVisibleRows) {
-            btnLoadMore.style.display = 'block';
-            btnLoadMore.textContent = `Ver mais despesas (Mostrando ${tableVisibleRows} de ${currentTableData.length})`;
-        } else {
-            btnLoadMore.style.display = 'none';
-        }
-    }
-
-    document.getElementById('btnLoadMore').addEventListener('click', () => {
-        tableVisibleRows += 12;
-        renderTableRows();
-    });
 </script>
 </body>
 </html>
