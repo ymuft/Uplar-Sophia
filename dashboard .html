@@ -553,7 +553,7 @@
         if (!rawSector) return 'Outros';
         const upper = rawSector.toUpperCase();
         
-        // Regras de negócio inteligentes baseadas no seu print
+        
         if (upper.includes('MONTAGEM') || upper.startsWith('MTG')) return 'Montagem';
         if (upper.includes('FUNDICAO') || upper.includes('FUNDIÇÃO')) return 'Fundição';
         if (upper.includes('USINAGEM')) return 'Usinagem';
